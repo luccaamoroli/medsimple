@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MedSimple V2</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#eef4fa;
+    color:#222;
+}
+header{
+    background:#0f3d62;
+    color:white;
+    padding:40px;
+    text-align:center;
+}
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+.card{
+    background:white;
+    border-radius:14px;
+    padding:24px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+h1,h2{
+    margin-top:0;
+}
+input, button, select{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+button{
+    background:#0f3d62;
+    color:white;
+    border:none;
+    cursor:pointer;
+}
+button:hover{
+    opacity:0.92;
+}
+.big-text{
+    font-size:1.2rem;
+}
+.warning{
+    background:#fff3cd;
+    border-left:5px solid #ffcc00;
+    padding:12px;
+    margin-top:15px;
+}
+footer{
+    text-align:center;
+    padding:20px;
+    color:#666;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>MedSimple V2</h1>
+<p>AI-style prescription explanations for everyday patients.</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Upload Prescription Photo</h2>
+<p>Future AI OCR support placeholder.</p>
+<input type="file" accept="image/*">
+</div>
+
+<div class="card">
+<h2>Medication Lookup</h2>
+
+<label>Medication Name</label>
+<input type="text" id="medName" placeholder="Enter medication name">
+
+<label>Language</label>
+<select id="language">
+<option>English</option>
+<option>Spanish</option>
+<option>Portuguese</option>
+</select>
+
+<button onclick="explainMedicine()">Explain Medication</button>
+</div>
+
+<div class="card big-text" id="result">
+<h2>Medication Information</h2>
+<p>Your medication explanation will appear here.</p>
+</div>
+
+<div class="card">
+<h2>Daily Medication Reminder</h2>
+<input type="text" placeholder="Medication name">
+<input type="time">
+<button onclick="saveReminder()">Save Reminder</button>
+<p id="reminderText"></p>
+</div>
+
+<div class="card">
+<h2>Voice Assistant</h2>
+<button onclick="speakInfo()">Read Explanation Out Loud</button>
+</div>
+
+</div>
+
+<footer>
+Educational purposes only. Always consult your doctor or pharmacist.
+</footer>
+
+<script>
+
+let currentText = "";
+
+function explainMedicine() {
+    const med = document.getElementById("medName").value.toLowerCase();
+    const lang = document.getElementById("language").value;
+    const result = document.getElementById("result");
+
+    let info = "";
+
+    if (med.includes("metformin")) {
+
+        if (lang === "Spanish") {
+            info = "<h2>Metformin</h2><p>La metformina ayuda a controlar el azúcar en la sangre en personas con diabetes tipo 2.</p>";
+        }
+        else if (lang === "Portuguese") {
+            info = "<h2>Metformin</h2><p>A metformina ajuda a controlar o açúcar no sangue em pessoas com diabetes tipo 2.</p>";
+        }
+        else {
+            info = "<h2>Metformin</h2><p>Metformin helps control blood sugar in people with type 2 diabetes.</p>";
+        }
+
+        info += "<div class='warning'><strong>Warning:</strong> Take with food unless told otherwise by a doctor.</div>";
+
+        currentText = "Metformin helps control blood sugar in people with type 2 diabetes.";
+    }
+
+    else if (med.includes("ibuprofen")) {
+
+        if (lang === "Spanish") {
+            info = "<h2>Ibuprofen</h2><p>El ibuprofeno reduce el dolor y la inflamación.</p>";
+        }
+        else if (lang === "Portuguese") {
+            info = "<h2>Ibuprofen</h2><p>O ibuprofeno reduz dor e inflamação.</p>";
+        }
+        else {
+            info = "<h2>Ibuprofen</h2><p>Ibuprofen reduces pain, fever, and inflammation.</p>";
+        }
+
+        info += "<div class='warning'><strong>Warning:</strong> Take with food to avoid stomach irritation.</div>";
+
+        currentText = "Ibuprofen reduces pain, fever, and inflammation.";
+    }
+
+    else {
+        info = "<h2>Medication Not Found</h2><p>Future AI database integration coming soon.</p>";
+        currentText = "Medication not found.";
+    }
+
+    result.innerHTML = info;
+}
+
+function speakInfo() {
+    if(currentText === ""){
+        alert("Please search a medication first.");
+        return;
+    }
+
+    const speech = new SpeechSynthesisUtterance(currentText);
+    speech.lang = "en-US";
+    window.speechSynthesis.speak(speech);
+}
+
+function saveReminder() {
+    document.getElementById("reminderText").innerHTML =
+        "Reminder saved locally on this demo version.";
+}
+
+</script>
+
+</body>
+</html>
